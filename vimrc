@@ -20,8 +20,10 @@ Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'bling/vim-airline'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
 Plugin 'mitermayer/vim-prettier'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tpope/vim-obsession'
 
 " Languages
 Plugin 'scrooloose/syntastic'
@@ -62,7 +64,7 @@ let g:elm_syntastic_show_warnings = 1
 
 let g:prettier#exec_cmd_async = 1
 " max line lengh that prettier will wrap on
-let g:prettier#config#print_width = 100
+let g:prettier#config#print_width = 110
 " number of spaces per indentation level
 let g:prettier#config#tab_width = 2
 " use tabs over spaces
@@ -78,7 +80,11 @@ let g:prettier#config#jsx_bracket_same_line = 'true'
 " none|es5|all
 let g:prettier#config#trailing_comma = 'all'
 " flow|babylon|typescript|postcss
-let g:prettier#config#parser = 'flow'
+let g:prettier#config#parser = 'typescript'
+" Format on save
+let g:prettier#quickfix_enbabled = 0
+let g:prettier#autoformat = 0
+autocmd BufWritePre,TextChanged,InsertLeave *.ts,*.js,*.json,*.css,*.scss,*.less,*.graphql PrettierAsync
 
 
 let g:Tex_DefaultTargetFormat = 'pdf'
@@ -107,7 +113,7 @@ set incsearch
 set ignorecase
 set smartcase
 
-set nowrap
+"set nowrap
 set incsearch
 
 set ttyfast
@@ -119,8 +125,6 @@ function! RestoreRegister()
   let @" = s:restore_reg
   return ''
 endfunction
-
-
 
 function! s:Repl()
     let s:restore_reg = @"
@@ -160,16 +164,16 @@ au FileType cpp setl sw=4 sts=4 et
 au FileType S setl sw=8 sts=8 et
 au FileType java setl sw=4 sts=4 et
 au FileType python setl sw=4 sts=4 et
+set tabstop=2 shiftwidth=2 expandtab "Global indents
 
+" Apply vimrc changes without restarting Vim
 augroup myvimrc
- au!
- au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+    au!
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 augroup END
-
-" Highlight lines over 80 characters
-set cc=80
 
 " Automatically format Elm code
 let g:elm_format_autosave = 1
 
-set tabstop=2 shiftwidth=2 expandtab
+" Automatically resize vim when window is resized
+autocmd VimResized * wincmd =
